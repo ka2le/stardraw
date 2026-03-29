@@ -1,40 +1,39 @@
 # Stardraw Plan
 
 ## Concept
-A 2.5D/3D-rendered side-view puzzle platformer built with Three.js where levels are authored as simple PNG images in Paint.
+A fullscreen Three.js puzzle platformer where levels are drawn as PNG images in Paint.
 
-## Core Prototype Goals
-- Load a level from an image
-- Interpret pixels by exact color codes
-- Spawn a player at blue
-- Reach the green goal
-- Collect yellow stars that disappear and increment score
-- Treat black pixels as solid terrain
-- Provide satisfying jump + movement with collision handling against thin walls
-- Show a small top bar with hamburger menu, title, and score
-- Start with a default included level image
-
-## Color Mapping
+## Level Rules
+Connected color regions are treated as semantic areas:
 - Black `#000000` = solid ground
-- Blue `#3F48CC` = player start
-- Green `#22B14C` = goal
-- Yellow `#FFF200` = star pickup
-- White `#FFFFFF` = empty space
+- Blue `#3F48CC` = player spawn area
+- Green `#22B14C` = goal area
+- Yellow `#FFF200` = star area
+- White `#FFFFFF` = empty background
 
-## Prototype Scope
-- Three.js rendering with orthographic camera for classic side view
-- Tile-based world generated from image pixels
-- Rectangle collision body for player
-- Axis-separated movement/collision for stable wall handling
-- Simple hover/glow animation for pickups and goal
-- Import level from local image file via menu
-- Configurable gameplay + color values in `game_config.js`
-- Tests for level parsing and validation
+For non-ground semantic colors, the loader should:
+1. Find each connected color region
+2. Produce one gameplay object from the region
+3. Replace that region with empty/white for the rest of analysis
 
-## Later
-- Keys / locked doors
-- Hazards
-- Better art pass
-- More advanced tile meshing
-- Multi-level flow
-- GitHub Pages deploy
+## Prototype Goals
+- Fullscreen game viewport
+- Proper HUD overlay with hamburger menu, title, score
+- Import level PNGs from menu
+- Load bundled default level
+- Region-based image parsing
+- Responsive player movement / jump
+- Stable collisions against walls and thin structures
+- Stars disappear on pickup and increment score
+- Goal completes level
+- Modular code structure
+- Tests for region parsing and level validation
+
+## Architecture Direction
+- `src/app` bootstrap / composition
+- `src/config` game config
+- `src/state` runtime state
+- `src/ui` HUD/menu/messages
+- `src/rendering` scene/camera/materials/world view
+- `src/levels` loader/service/world builder
+- `src/gameplay` input/player/collision/pickups/goal

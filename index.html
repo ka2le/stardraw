@@ -4,32 +4,64 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stardraw</title>
-    <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
-    <div id="app">
-      <header class="topbar">
-        <button id="menuButton" class="menu-button" aria-label="Open menu" title="Open menu">
-          <span></span><span></span><span></span>
-        </button>
-        <div class="title-wrap">
-          <h1>Stardraw</h1>
-          <div id="score" class="score">Stars: 0</div>
+    <div id="app" class="game-shell">
+      <div id="gameContainer" class="game-viewport"></div>
+
+      <header class="hud-top">
+        <div class="hud-left">
+          <button id="menuButton" class="hud-icon-button" aria-label="Open menu" aria-expanded="false" aria-controls="menuPanel">
+            <span></span><span></span><span></span>
+          </button>
+          <div class="hud-brand">
+            <h1>Stardraw</h1>
+            <p>Paint a level. Collect every star.</p>
+          </div>
+        </div>
+
+        <div class="hud-right hud-stats">
+          <div class="score-card"><span class="score-label">Stars</span><span id="starsValue" class="score-value">0/0</span></div>
+          <div class="score-card"><span class="score-label">Lives</span><span id="livesValue" class="score-value">3</span></div>
+          <div class="score-card"><span class="score-label">Keys</span><span id="keysValue" class="score-value">0</span></div>
+          <div id="bootsCard" class="score-card"><span class="score-label">Boots</span><span id="bootsValue" class="score-value">Off</span></div>
         </div>
       </header>
 
-      <aside id="menuPanel" class="menu-panel hidden">
-        <label class="menu-item file-input-label">
-          <span>Import level</span>
-          <input id="levelFileInput" type="file" accept="image/png,image/*" />
-        </label>
-        <button id="reloadButton" class="menu-item">Reload default level</button>
+      <div id="menuBackdrop" class="menu-backdrop hidden"></div>
+      <aside id="menuPanel" class="side-menu hidden">
+        <div class="side-menu__header"><h2>Menu</h2><p>Load or reload level images.</p></div>
+        <div class="side-menu__content">
+          <button id="importButton" class="menu-action" type="button"><span class="menu-action__title">Import level</span><span class="menu-action__meta">Choose the gameplay PNG</span></button>
+          <input id="levelFileInput" type="file" accept="image/png,image/*" hidden />
+          <button id="backgroundButton" class="menu-action" type="button"><span class="menu-action__title">Import matching background</span><span class="menu-action__meta">Optional art PNG for the same level size</span></button>
+          <input id="backgroundFileInput" type="file" accept="image/png,image/*" hidden />
+          <button id="reloadButton" class="menu-action" type="button"><span class="menu-action__title">Reload bundled level</span><span class="menu-action__meta">Return to the default test world</span></button>
+        </div>
       </aside>
 
-      <div id="gameContainer" class="game-container"></div>
-      <div id="message" class="message hidden"></div>
-    </div>
+      <div id="message" class="toast hidden"></div>
 
+      <div id="winBackdrop" class="win-backdrop hidden"></div>
+      <section id="winModal" class="win-modal hidden" aria-label="Level complete">
+        <div class="win-modal__eyebrow">Level Complete</div><h2>You made it ✨</h2><p>Stars collected</p>
+        <div id="winStars" class="win-modal__score">0 / 0</div>
+        <div class="win-modal__actions">
+          <button id="restartButton" class="win-button win-button--primary" type="button">Restart level</button>
+          <button id="newLevelButton" class="win-button" type="button">Load new level</button>
+        </div>
+      </section>
+
+      <div id="deathBackdrop" class="win-backdrop hidden"></div>
+      <section id="deathModal" class="win-modal hidden" aria-label="Out of lives">
+        <div class="win-modal__eyebrow">Out of Lives</div><h2>Back to spawn ☠️</h2><p>Lives remaining</p>
+        <div id="deathLives" class="win-modal__score">0</div>
+        <div class="win-modal__actions">
+          <button id="deathRestartButton" class="win-button win-button--primary" type="button">Restart level</button>
+          <button id="deathNewLevelButton" class="win-button" type="button">Load new level</button>
+        </div>
+      </section>
+    </div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
